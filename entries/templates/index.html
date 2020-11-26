@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block blog_content %}
+        {% for entry in page_obj %}
+        <div class="card mb-4">
+          <img class="card-img-top" src="{{ entry.entry_image.url }}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{ entry.entry_title }}</h2>
+            <p class="card-text">{{ entry.entry_text|safe|truncatechars_html:200 }}</p>
+            <a href="/detail/{{ entry.id }}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{ entry.entry_date }} by
+            <a href="#">{{ entry.entry_author}}</a>
+          </div>
+        </div>
+        {% endfor %}
+{% endblock blog_content %}
+
+{% block page %}
+        <div class="pagination">
+            <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+            </span>
+        </div><br /><br />
+{% endblock page %}

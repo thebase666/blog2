@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block blog_content %}
+
+        <!-- Blog Post -->
+        <div class="card mb-4">
+          <img class="card-img-top" src="{{ context.entry.entry_image.url }}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{ context.entry.entry_title }}</h2>
+            <p class="card-text">{{ context.entry.entry_text|safe|truncatechars_html:200 }}</p>
+
+          </div>
+          <div class="card-footer text-muted">
+            Posted on {{ context.entry.entry_date }} by
+            <a href="#">{{ context.entry.entry_author}}</a>
+          </div>
+        </div>
+<br/><br/>
+<form action="/like/{{ context.entry.id }}" method="POST">
+      {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Like</button>
+{{ context.entry_likes }} likes
+</form>
+<br/><br/>
+{% for comment in context.comments %}
+{{ comment.comment_text}}--{{ comment.comment_name }}--{{ comment.comment_date}}
+<br/><br/>
+{% endfor %}
+
+{% endblock blog_content %}
